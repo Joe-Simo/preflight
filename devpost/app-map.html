@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preflight: app map</title>
+<style>
+  body { margin: 0; background: #0c0f0e; color: #eef2ef; font: 16px/1.6 system-ui, sans-serif; }
+  main { max-width: 860px; margin: 0 auto; padding: 48px 20px 80px; }
+  h1 { font-size: 28px; margin: 0 0 6px; } h2 { font-size: 15px; letter-spacing: .12em; text-transform: uppercase; color: #94a39a; margin: 36px 0 12px; }
+  p, li { color: #c9d3cc; } code { font: 14px ui-monospace, Menlo, monospace; color: #7fd49b; }
+  .flow { display: grid; gap: 10px; } .step { background: #141917; border: 1px solid #252d29; border-radius: 12px; padding: 14px 16px; }
+  .step b { color: #eef2ef; } .arrow { color: #94a39a; text-align: center; }
+  details { background: #141917; border: 1px solid #252d29; border-radius: 12px; padding: 12px 16px; margin-bottom: 10px; }
+  summary { cursor: pointer; color: #eef2ef; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Preflight: app map</h1>
+  <p>One request, followed from the button to the screen. Every box names the file and function to open.</p>
+
+  <h2>The path of one run</h2>
+  <div class="flow">
+    <div class="step"><b>1. You press Run preflight.</b> <code>src/components/Preflight.tsx</code> <code>run()</code> POSTs <code>{hackathon, repo, video}</code>.</div>
+    <div class="arrow">&darr;</div>
+    <div class="step"><b>2. The endpoint validates and fans out.</b> <code>src/app/api/preflight/route.ts</code> <code>POST</code>: <code>parseHackathonUrl</code> allows only <code>*.devpost.com</code>, then three fetches run in parallel.</div>
+    <div class="arrow">&darr;</div>
+    <div class="step"><b>3. Rules become quotable sentences.</b> <code>src/lib/devpost.ts</code> <code>extractRules</code> uses <code>textBlocks</code> and <code>sentences</code> from <code>src/lib/text.ts</code>, then picks the repository, license, video, new-project and file sentences, and the criteria.</div>
+    <div class="arrow">&darr;</div>
+    <div class="step"><b>4. Your links are checked.</b> <code>src/lib/github.ts</code> <code>checkRepo</code> (repo and file tree) and <code>src/lib/video.ts</code> <code>checkVideo</code> (oEmbed).</div>
+    <div class="arrow">&darr;</div>
+    <div class="step"><b>5. Rules meet findings.</b> <code>src/lib/checks.ts</code> <code>buildChecks</code> returns rows with a status, what was found, and the rule quote. <code>criteriaMismatch</code> compares the two criteria lists.</div>
+    <div class="arrow">&darr;</div>
+    <div class="step"><b>6. The page draws the rows.</b> back in <code>Preflight.tsx</code>, grouped Timing, Repository, Video.</div>
+  </div>
+
+  <h2>Where the tests are</h2>
+  <details><summary><code>test/devpost.test.ts</code>: the parser on four real events</summary><p>Saved copies of the overview and rules pages for Build With AI: Basics, Amazon, Qloo and PayPal live in <code>test/fixtures/</code>. If Devpost changes its template, these fail first.</p></details>
+  <details><summary><code>test/checks.test.ts</code>: every status path</summary><p>Pass, fail, check yourself and couldn't check, with fake GitHub and oEmbed answers (including a rate limit and a private video).</p></details>
+
+  <h2>A practice to reuse</h2>
+  <p>Write down the uncertainty before you build, then settle it with one small test. Here, the spec asked whether YouTube length could be read without a key. One experiment said no, so the plan changed to "check yourself" instead of a guess. See <code>devpost/spec.md</code>, Decisions and Open Issues.</p>
+</main>
+</body>
+</html>

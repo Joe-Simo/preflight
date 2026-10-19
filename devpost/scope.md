@@ -15,7 +15,7 @@ Every check quotes the exact rule sentence it comes from, pulled live from that 
 ## Who It's For
 A solo developer or small team about to submit to an online Devpost hackathon, usually in the last few hours, often after a weekend of building. Today they skim a long legal rules page, guess at what "must be public" and "license detectable in the About section" mean, and find out in Stage One that they missed one.
 
-Why it matters: a Databricks judge wrote that they were "surprised to see how many submissions did not fulfill the basic requirements" (Devpost blog, "Advice from 5 seasoned judges"). Stage One of this very event is pass/fail on requirements.
+Why it matters: a Databricks judge said "it was surprising to see how many submissions did not fulfill the basic requirements" (Devpost blog, "Advice from 5 seasoned judges"). Stage One of this very event is pass/fail on requirements.
 
 ## The Core Loop
 1. Paste a Devpost hackathon URL, a GitHub repo URL, and (optionally) a YouTube or Vimeo link.
